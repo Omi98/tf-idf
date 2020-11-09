@@ -1,88 +1,38 @@
+{% extends "base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
+{% block content %}
 
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<div class="register-page form-page">
 
-        <!-- Favicon -->
-        <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}"/>
+    <!-- Title -->
+    <h2 class="form-title"> Register </h2>
 
-        <!-- Title -->
-        <title>Register</title>
+    <form class="form-body" action="/register/" method="POST">
 
-        <!-- Linking Stylesheet file -->
-        <link rel="stylesheet" type="text/css" href="{% static 'css/stylesheet.css' %}">
+        {% csrf_token %}
 
-        <!-- Linking javascript file -->
-        <script src="{% static 'js/project.js' %}"></script>
+        <!-- <label for="name" class="reg-form-label">Name</label> <br> -->
+        <input type="text" name="username" id="" placeholder="Username" class="form-input form-input1">
+        <br>
 
-        <!-- JS, Popper.js, and jQuery -->
-        <script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <!-- <label for="email" class="reg-form-label">Email</label> <br> -->
+        <input type="gmail" name="gmail" id="" placeholder="Email" class="form-input form-input2">
+        <br>
 
-        <!-- Font Awesome ... icons -->
-        <script src="https://kit.fontawesome.com/yourcode.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+        <!-- <label for="pass" class="reg-form-label">Password</label> <br> -->
+        <input type="password" name="password" id="" placeholder="Password" class="form-input form-input3">
+        <br>
 
-    </head>
+        <button type="submit">Register</button>
+    </form>
 
-    <body>
-        <!-- header -->
-        <!-- -->
-        <header class="home_header">
-            <img class="logo" src="{% static 'images/logo.png' %}">
+    <div class="member-ques">Already a member?
+        <a href="/login_page/">Login here</a>
+    </div>
 
-            <button id="navigation-btn" class="nav-toggle-btn" onclick="myFunction()"><i id="plusIcon" class="fa fa-plus" aria-hidden="true"></i></button>
-
-            <nav id="navigation-bar" class="navbar">
-                <ul>
-                    <li><a href="/home/" id="linkID">Home</a></li>
-                    <li><a href="project.html">Project</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="/register_page/" class="nav_reg_btn">Register</a></li>
-                </ul>
-            </nav>
-        </header>
-
-    <div class="register-page form-page">
-
-        <!-- <img class="reg-illustration" src="reg-img.png">  -->
-
-        <h2 class="form-title">Register</h2>
-
-        <form class="form-body" action="/register/" method="POST">
-            {% csrf_token %}
-
-            <!-- <label for="name" class="reg-form-label">Name</label> <br> -->
-            <input type="text" name="username" id="" placeholder="Username" class="form-input form-input1">
-            <br>
-
-            <!-- <label for="email" class="reg-form-label">Email</label> <br> -->
-            <input type="gmail" name="gmail" id="" placeholder="Email" class="form-input form-input2">
-            <br>
-
-            <!-- <label for="pass" class="reg-form-label">Password</label> <br> -->
-            <input type="password" name="password" id="" placeholder="Password" class="form-input form-input3">
-            <br>
-
-            <button type="submit">Register</button>
-        </form>
-
-        <div class="member-ques">Already a member?  <a href="/login_page/">Login here</a></div>
-
-
-
-        <a href="/login_page/" class="form-btn_proceed">Proceed</a>
+    <a href="/login_page/" class="form-btn_proceed">Proceed</a>
 
     </div>
 
-    </body>
-
-</html>
+{% endblock %}
