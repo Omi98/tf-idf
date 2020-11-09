@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 
+from django.contrib.auth import logout
 from django.contrib.auth.models import User, auth
 
 # Create your views here.
@@ -19,7 +20,10 @@ def register_page(request):
 
 
 def search_page(request):
-    return render(request, 'search.html')
+    if request.user.is_authenticated:
+        return render(request, 'search.html')
+    else:
+        return redirect('/login')
 
 
 def register(request):
@@ -61,3 +65,9 @@ def login(request):
             return redirect('/login_page/')
     else:
         return redirect('/login_page/')
+
+
+def logout(request):
+    auth.logout(request)
+    print('\n user logged out \n')
+    return redirect('/home/')
