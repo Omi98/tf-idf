@@ -7,4 +7,4 @@ class Papers(models.Model):
     paper_title=models.CharField(max_length=(200))
     author_keywords=models.CharField(max_length=(200))
     abstract=models.CharField(max_length=(2000))
-    area=models.CharField(max_length=(50))
+    area=models.CharField(max_length=(150))
