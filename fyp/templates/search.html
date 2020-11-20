@@ -2,9 +2,63 @@
 {% load static %}
 
 {% block content %}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5e2da7c87ad81112faa9c953b571702ef2b4c364
 <div class="search-page">
     <div class="stext1">
         Here's your coffee!
     </div>
+<<<<<<< HEAD
 </div>
 {% endblock %}
+=======
+
+    <!-- Load icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <!-- The form -->
+    <form class="example" action="action_page.php">
+        <input type="text" placeholder="Search"/> <br />
+        <input type="text" placeholder="Keywords"/> <br />
+        <input type="text" placeholder="Abstract"/> <br />
+
+        <!-- However, as with all input elements, you need to define a name for it to be usable
+        - without a name, the element won't be identifiable when posting the form back to a server
+        for processing. You also want to set a value
+        - this will be the value sent to the server if the radio button has been selected -->
+        <select class="" name="area">
+            <option value="1">Machine Learning I</option>
+            <option value="2">Neural Networks I</option>
+            <option value="3">Neural Network II</option>
+            <option value="4">Semi-Supervised Learning</option>
+            <option value="5">Medicine and Bioinformatics</option>
+            <option value="6">Real-time Systems and Industry</option>
+            <option value="7">Information Retrieval I</option>
+            <option value="8">Information Retrieval II</option>
+            <option value="9">Science and Industry</option>
+            <option value="10">Machine Learning II</option>
+            <option value="11">Medicine, Science and Music</option>
+            <option value="12">Machine Learning for Predictive Models I</option>
+            <option value="13">Machine Learning for Predictive Models II</option>
+            <option value="14">Machine Learning Applications in Education I</option>
+            <option value="15">Machine Learning Applications in Education II</option>
+            <option value="16">Machine Learning in Information and System Security Issues</option>
+            <option value="17">Machine Learning in Energy Applications</option>
+            <option value="18">Machine Learning Algorithms, Systems and Applications</option>
+            <option value="19">Adaptive Data-Driven Modeling in Dynamic Environments and On-line Processes</option>
+            <option value="20">Machine Learning in Visual Information Processing</option>
+            <option value="21">Machine learning of graphical models in static and dynamic complex environments</option>
+        </select>
+
+        <br />
+        <!-- <i class="fa fa-search"></i> -->
+        <button type="submit">Search</button>
+    </form>
+
+</div>
+
+{% endblock %}
+>>>>>>> 5e2da7c87ad81112faa9c953b571702ef2b4c364

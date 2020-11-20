@@ -66,6 +66,8 @@ def login(request):
     else:
         return redirect('/login_page/')
 
-def logout_view(request):
-    logout(request)
-    return redirect('/')
+
+def logout(request):
+    auth.logout(request)
+    print('\n user logged out \n')
+    return redirect('/home/')
