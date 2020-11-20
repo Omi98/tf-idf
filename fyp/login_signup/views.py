@@ -24,8 +24,7 @@ def search_page(request):
         return render(request, 'search.html')
     else:
         return redirect('/login')
-
-
+            
 def register(request):
     if request.method == 'POST':
         username = request.POST['username']
