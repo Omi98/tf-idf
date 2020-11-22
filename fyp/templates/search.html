@@ -12,11 +12,24 @@
 
 
     <!-- The form -->
-    <form class="example" action="/api/search/" method="GET">
-        <input type="text" placeholder="Search"/> <br />
-        <input type="text" placeholder="Keywords"/> <br />
-        <input type="text" placeholder="Abstract"/> <br />
+    <form class="example" action="/api/generate_model/" method="GET">
+        <br />
+        <button type="submit">Generate Model Custom</button>
+        <br />
+    </form>
+    <form class="example" action="/api/generate_model_vectorizer/" method="GET">
+        <br />
+        <button type="submit">Generate Model Vectorizer</button>
+        <br />
+        <br />
+    </form>
+    <form class="example" action="/api/search_articles/" method="GET">
 
+        <input type="text" name="paper_title" placeholder="Search"/> <br />
+        <input type="text" name="keywords" placeholder="Keywords"/> <br />
+        <input type="text" name="abstract" placeholder="Abstract"/> <br />
+
+        <br />
         <!-- However, as with all input elements, you need to define a name for it to be usable
         - without a name, the element won't be identifiable when posting the form back to a server
         for processing. You also want to set a value
@@ -45,6 +58,7 @@
             <option value="21">Machine learning of graphical models in static and dynamic complex environments</option>
         </select>
 
+        <br />
         <br />
         <!-- <i class="fa fa-search"></i> -->
         <button type="submit">Search</button>
