@@ -41,23 +41,27 @@ def computeTF(wordDict, bagOfWords):
 
 def generate_model_custom(request):
     if request.user.is_authenticated:
-        data = pd.read_csv(os.path.join(BASE_DIR, 'tf_idf/models/Papers Data.csv'),encoding='latin1')  
+        # data = pd.read_csv(os.path.join(BASE_DIR, 'tf_idf/models/Papers Data.csv'),encoding='latin1')  
 
-        for idx, row in data.iterrows():
-            exists = Papers.objects.filter(paper_id=row[0]).exists() # return True/False
-            if not exists:
-                author_keywords = row[2]
-                abstract = row[3]
-                # documents.append(abstract)
-                _, created = Papers.objects.get_or_create(
-                    paper_id=row[0],
-                    paper_title=row[1],
-                    author_keywords=author_keywords,
-                    abstract=abstract,
-                    area=row[4],
-                    )
+        # for idx, row in data.iterrows():
+        #     exists = Papers.objects.filter(paper_id=row[0]).exists() # return True/False
+        #     if not exists:
+        #         author_keywords = row[2]
+        #         abstract = row[3]
+        #         # documents.append(abstract)
+        #         _, created = Papers.objects.get_or_create(
+        #             paper_id=row[0],
+        #             paper_title=row[1],
+        #             author_keywords=author_keywords,
+        #             abstract=abstract,
+        #             area=row[4],
+        #         )
         
-        documents = ["the man went out for a walk", "the children sat around the fire"]
+        documents = []
+        papers = Papers.objects.all()
+        for paper in papers:
+            document = paper.paper_title + " " + paper.abstract
+            documents.append(document)
 
         uniquewords = []
         for doc in documents:
@@ -86,47 +90,7 @@ def generate_model_custom(request):
         return render(request, 'search.html')
     else:
         return redirect('/login')
-      
-def generate_model_vectorizer(request):
-    if request.user.is_authenticated:
-        data = pd.read_csv(os.path.join(BASE_DIR, 'tf_idf/models/Papers Data.csv'),encoding='latin1')  
 
-        documents = []
-        for idx, row in data.iterrows():
-            exists = Papers.objects.filter(paper_id=row[0]).exists() # return True/False
-            if not exists:
-                author_keywords = row[2]
-                abstract = row[3]
-                documents.append(abstract)
-                _, created = Papers.objects.get_or_create(
-                    paper_id=row[0],
-                    paper_title=row[1],
-                    author_keywords=author_keywords,
-                    abstract=abstract,
-                    area=row[4],
-                    )
-        
-        if len(documents) > 0:
-            vectorizer = TfidfVectorizer()
-            vectors = vectorizer.fit_transform(documents)
-            feature_names = vectorizer.get_feature_names()
-            dense = vectors.todense()
-            denselist = dense.tolist()
-            df = pd.DataFrame(denselist, columns=feature_names)
-        
-            for col, rows in df.iteritems():
-                for idx, row in rows.iteritems():
-                    paper_id = data.loc[idx, ['paper_id']]
-                    _, created = RecommendationModel.objects.get_or_create(
-                        paper_id=paper_id,
-                        word=col,
-                        tfidf=row,
-                        )
-
-        return render(request, 'search.html')
-    else:
-        return redirect('/login')
-      
 def search_articles(request):
     if request.user.is_authenticated:
         paper_title = request.GET.get('paper_title')
