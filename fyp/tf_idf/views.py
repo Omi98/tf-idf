@@ -9,7 +9,7 @@ from .settings import BASE_DIR
 import pandas as pd
 from .models import Papers
 from .models import RecommendationModel
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Create your views here.
 def computeTFIDF(tfBagOfWords, idfs):
@@ -68,24 +68,43 @@ def generate_model_custom(request):
             parsed_doc = doc.split(' ')
             uniquewords = set(parsed_doc).union(set(uniquewords))
 
-        numOfWordsDict = []
+        wordsCountDict = []
         tfDict = []
         for idx, doc in enumerate(documents):
             parsed_doc = doc.split(' ')
             numOfWords = dict.fromkeys(uniquewords, 0)
             for word in parsed_doc:
                 numOfWords[word] += 1
-
-            numOfWordsDict.append(numOfWords);
+            wordsCountDict.append(numOfWords);
             tf = computeTF(numOfWords, parsed_doc)
             tfDict.append(tf)
-            print(idx, "IDF Index")
 
-        idfs = computeIDF(numOfWordsDict)
+        idfs = computeIDF(wordsCountDict)
 
         for tf in tfDict:
             tfIdf = computeTFIDF(tf, idfs)
-            print(tfIdf)
+
+        # 3: User Query
+        paper_title = request.GET.get('paper_title')
+        keywords = request.GET.get('keywords')
+        abstract = request.GET.get('abstract')
+        area = request.GET.get('area')
+
+        queryDocument = paper_title + " " + abstract
+        
+        parsed_doc = queryDocument.split(' ')
+        queryNumOfWords = dict.fromkeys(uniquewords, 0)
+        for word in parsed_doc:
+            queryNumOfWords[word] += 1
+
+        wordsCountDict = [queryNumOfWords]
+        tfDict = computeTF(queryNumOfWords, parsed_doc)
+        print(tfDict)
+
+        Idfs = computeIDF(wordsCountDict)
+
+        queryTfIdf = computeTFIDF(tfDict, Idfs)
+        print(queryTfIdf)
 
         return render(request, 'search.html')
     else:
