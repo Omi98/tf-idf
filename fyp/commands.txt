@@ -1,0 +1,12 @@
+--- django-sass-compiler
+
+1. to install:
+pip install django-sass-compiler
+
+2. to compile (one time compilation)
+python manage.py sass-compiler
+
+3. watch compilation (live server)
+python manage.py runserver & python manage.py sass-compiler --watch
+
+-------------------------------------------------------------------------- 
