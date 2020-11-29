@@ -263,17 +263,19 @@ body{
     text-align: center;
 
     background-image: url('/static/images/search-img.png');
-    // background-color: white;
+    margin-top: 16vh;
     background-repeat: no-repeat;
-    background-size: 80%;
-    background-position: top center;
+    background-size: 100%;
+    background-position: center;
+    background-position: top;
+
     height: 100vh;
 
     .stext1 {
         // todo
-        color: #1f4568;
+        color: #1f4568; // color: red;
         font-size: 3.5vw;
-        margin-top: 19vh;
+        padding-top: 22%;
     }
 }
 
