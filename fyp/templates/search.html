@@ -12,17 +12,12 @@
 
 
     <!-- The form -->
-    <form class="example" action="/api/generate_model/" method="GET">
-        <br />
-        <button type="submit">Generate Model Custom</button>
-        <br />
-        <br />
-    </form>
     <form class="example" action="/api/search_articles/" method="GET">
 
-        <input type="text" name="paper_title" placeholder="Search"/> <br />
-        <input type="text" name="keywords" placeholder="Keywords"/> <br />
-        <input type="text" name="abstract" placeholder="Abstract"/> <br />
+        <br />
+        <input type="text" name="search" placeholder="Search" {% if request.GET.search %} value={{ request.GET.search }} {% endif %} /> <br />
+        <input type="text" name="keywords" placeholder="Keywords" {% if request.GET.keywords %} value={{ request.GET.keywords }} {% endif %}/> <br />
+        <input type="text" name="abstract" placeholder="Abstract" {% if request.GET.abstract %} value={{ request.GET.abstract }} {% endif %}/> <br />
 
         <br />
         <!-- However, as with all input elements, you need to define a name for it to be usable
@@ -30,33 +25,60 @@
         for processing. You also want to set a value
         - this will be the value sent to the server if the radio button has been selected -->
         <select class="" name="area">
-            <option value="1">Machine Learning I</option>
-            <option value="2">Neural Networks I</option>
-            <option value="3">Neural Network II</option>
-            <option value="4">Semi-Supervised Learning</option>
-            <option value="5">Medicine and Bioinformatics</option>
-            <option value="6">Real-time Systems and Industry</option>
-            <option value="7">Information Retrieval I</option>
-            <option value="8">Information Retrieval II</option>
-            <option value="9">Science and Industry</option>
-            <option value="10">Machine Learning II</option>
-            <option value="11">Medicine, Science and Music</option>
-            <option value="12">Machine Learning for Predictive Models I</option>
-            <option value="13">Machine Learning for Predictive Models II</option>
-            <option value="14">Machine Learning Applications in Education I</option>
-            <option value="15">Machine Learning Applications in Education II</option>
-            <option value="16">Machine Learning in Information and System Security Issues</option>
-            <option value="17">Machine Learning in Energy Applications</option>
-            <option value="18">Machine Learning Algorithms, Systems and Applications</option>
-            <option value="19">Adaptive Data-Driven Modeling in Dynamic Environments and On-line Processes</option>
-            <option value="20">Machine Learning in Visual Information Processing</option>
-            <option value="21">Machine learning of graphical models in static and dynamic complex environments</option>
+            <option {% if request.GET.area and request.GET.area == "Machine Learning I" %} selected {% endif %} value="Machine Learning I">Machine Learning I</option>
+            <option {% if request.GET.area and request.GET.area == "Neural Networks I" %} selected {% endif %} value="Neural Networks I">Neural Networks I</option>
+            <option {% if request.GET.area and request.GET.area == "Neural Network II" %} selected {% endif %} value="Neural Network II">Neural Network II</option>
+            <option {% if request.GET.area and request.GET.area == "Semi-Supervised Learning" %} selected {% endif %} value="Semi-Supervised Learning">Semi-Supervised Learning</option>
+            <option {% if request.GET.area and request.GET.area == "Medicine and Bioinformatics" %} selected {% endif %} value="Medicine and Bioinformatics">Medicine and Bioinformatics</option>
+            <option {% if request.GET.area and request.GET.area == "Real-time Systems and Industry" %} selected {% endif %} value="Real-time Systems and Industry">Real-time Systems and Industry</option>
+            <option {% if request.GET.area and request.GET.area == "Information Retrieval I" %} selected {% endif %} value="Information Retrieval I">Information Retrieval I</option>
+            <option {% if request.GET.area and request.GET.area == "Information Retrieval II" %} selected {% endif %} value="Information Retrieval II">Information Retrieval II</option>
+            <option {% if request.GET.area and request.GET.area == "Science and Industry" %} selected {% endif %} value="Science and Industry">Science and Industry</option>
+            <option {% if request.GET.area and request.GET.area == "Machine Learning II" %} selected {% endif %} value="Machine Learning II">Machine Learning II</option>
+            <option {% if request.GET.area and request.GET.area == "Medicine, Science and Music" %} selected {% endif %} value="Medicine, Science and Music">Medicine, Science and Music</option>
+            <option {% if request.GET.area and request.GET.area == "Machine Learning for Predictive Models I" %} selected {% endif %} value="Machine Learning for Predictive Models I">Machine Learning for Predictive Models I</option>
+            <option {% if request.GET.area and request.GET.area == "Machine Learning for Predictive Models II" %} selected {% endif %} value="Machine Learning for Predictive Models II">Machine Learning for Predictive Models II</option>
+            <option {% if request.GET.area and request.GET.area == "Machine Learning Applications in Education I" %} selected {% endif %} value="Machine Learning Applications in Education I">Machine Learning Applications in Education I</option>
+            <option {% if request.GET.area and request.GET.area == "Machine Learning Applications in Education II" %} selected {% endif %} value="Machine Learning Applications in Education II">Machine Learning Applications in Education II</option>
+            <option {% if request.GET.area and request.GET.area == "Machine Learning in Information and System Security Issues" %} selected {% endif %} value="Machine Learning in Information and System Security Issues">Machine Learning in Information and System Security Issues</option>
+            <option {% if request.GET.area and request.GET.area == "Machine Learning in Energy Applications" %} selected {% endif %} value="Machine Learning in Energy Applications">Machine Learning in Energy Applications</option>
+            <option {% if request.GET.area and request.GET.area == "Machine Learning Algorithms, Systems and Applications" %} selected {% endif %} value="Machine Learning Algorithms, Systems and Applications">Machine Learning Algorithms, Systems and Applications</option>
+            <option {% if request.GET.area and request.GET.area == "Adaptive Data-Driven Modeling in Dynamic Environments and On-line Processes" %} selected {% endif %} value="Adaptive Data-Driven Modeling in Dynamic Environments and On-line Processes">Adaptive Data-Driven Modeling in Dynamic Environments and On-line Processes</option>
+            <option {% if request.GET.area and request.GET.area == "Machine Learning in Visual Information Processing" %} selected {% endif %} value="Machine Learning in Visual Information Processing">Machine Learning in Visual Information Processing</option>
+            <option {% if request.GET.area and request.GET.area == "Machine learning of graphical models in static and dynamic complex environments" %} selected {% endif %} value="Machine learning of graphical models in static and dynamic complex environments">Machine learning of graphical models in static and dynamic complex environments</option>
         </select>
 
+        
         <br />
         <br />
         <!-- <i class="fa fa-search"></i> -->
         <button type="submit">Search</button>
+
+        <br />
+        <br />
+        <br />
+        <br />
+
+        {% if sorted_papers is not None and area is not None %}
+        <hr />    
+        <h1>{{ area }}</h1>
+        <hr />  
+        <div style="padding: 0 30px;">
+            {% for paper in sorted_papers %}
+                <div class="row">
+    
+                    <div class="col-md-3">
+    
+                        <h3>{{ paper.paper_title }}</h3>
+                        <p>{{ paper.abstract }}</p>
+    
+                    </div>
+    
+                </div>
+                <hr />
+            {% endfor %}
+        </div>
+        {% endif %}
     </form>
 
 </div>
