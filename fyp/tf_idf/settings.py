@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_sass_compiler',
     'login_signup',
     'tf_idf',
     'django.contrib.admin',
