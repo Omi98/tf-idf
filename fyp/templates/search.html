@@ -62,30 +62,33 @@
         {% if sorted_papers is not None and area is not None %}
         <hr />    
         <h1>{{ area }}</h1>
+        
+        <button type="button" onclick="
+            exportToCsv('all.csv', allData)
+        ">Export all {{total_count}} papers as CSV</button>
         <hr />  
         <div style="padding: 0 30px;">
+            {{ sorted_papers|json_script:'papers-info' }}
+            <script type="text/javascript">
+                const data = JSON.parse(document.getElementById('papers-info').textContent);
+                var allData = []
+                data.forEach(x => {
+                    const rows = [[`Title: ${x.paper.title}`], [`TFIDF Score: ${x.score}`], [`Abstract: ${x.paper.abstract}`]];
+                    allData = [...allData, "", "", ...rows];
+                })
+            </script>
+
 
             {% for paperInfo in sorted_papers %}
             <div class="row">
                 {{ paperInfo.paper|json_script:'paper-info' }}
                 {{ paperInfo.score|json_script:'paper-score' }}
     
-                    <div class="col-md-3">
-                        
-                        <h3>{{ paperInfo.paper.title }}</h3>
-                        <p>{{ paperInfo.paper.abstract }}</p>
-                        
-                    </div>
+                <div class="col-md-3">
                     
+                    <h3>{{ paperInfo.paper.title }}</h3>
+                    <p>{{ paperInfo.paper.abstract }}</p>
                     
-                <button type="button" onclick="
-                    const data = JSON.parse(document.getElementById('paper-info').textContent);
-                    const score = JSON.parse(document.getElementById('paper-score').textContent);
-                    const rows = [[`TFIDF Score: ${score}`], [`Title: ${data.title}`], [`Abstract: ${data.abstract}`]];
-                    
-                    exportToCsv(data.title + '.csv', rows)
-                ">Export as CSV</button>
-    
                 </div>
                 <hr />
             {% endfor %}
@@ -95,6 +98,7 @@
 
 </div>
 <script>
+
     function exportToCsv(filename, rows) {
     var processRow = function (row) {
         var finalVal = '';

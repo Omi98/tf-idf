@@ -57,9 +57,9 @@ def search_articles(request):
         for sorted_doc_idx in score_doc_map:
             doc = documents[sorted_doc_idx['index']]
             paper_map = next((item for item in papers_docs_mapping if item["document"] == doc), None)
-            score = sorted_doc_idx['score'].max;
+            score = sorted_doc_idx['score'][0];
             sorted_papers.append({ 'paper': { 'title': paper_map['paper'].paper_title, 'abstract': paper_map['paper'].abstract }, 'score': score })
-
-        return render(request, 'search.html', { 'sorted_papers': sorted_papers, 'area': area })
+            
+        return render(request, 'search.html', { 'sorted_papers': sorted_papers, 'area': area, 'total_count': len(sorted_papers) })
     else:
         return redirect('/login')
