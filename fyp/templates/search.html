@@ -64,15 +64,27 @@
         <h1>{{ area }}</h1>
         <hr />  
         <div style="padding: 0 30px;">
-            {% for paper in sorted_papers %}
-                <div class="row">
+
+            {% for paperInfo in sorted_papers %}
+            <div class="row">
+                {{ paperInfo.paper|json_script:'paper-info' }}
+                {{ paperInfo.score|json_script:'paper-score' }}
     
                     <div class="col-md-3">
-    
-                        <h3>{{ paper.paper_title }}</h3>
-                        <p>{{ paper.abstract }}</p>
-    
+                        
+                        <h3>{{ paperInfo.paper.title }}</h3>
+                        <p>{{ paperInfo.paper.abstract }}</p>
+                        
                     </div>
+                    
+                    
+                <button type="button" onclick="
+                    const data = JSON.parse(document.getElementById('paper-info').textContent);
+                    const score = JSON.parse(document.getElementById('paper-score').textContent);
+                    const rows = [[`TFIDF Score: ${score}`], [`Title: ${data.title}`], [`Abstract: ${data.abstract}`]];
+                    
+                    exportToCsv(data.title + '.csv', rows)
+                ">Export as CSV</button>
     
                 </div>
                 <hr />
@@ -82,5 +94,48 @@
     </form>
 
 </div>
+<script>
+    function exportToCsv(filename, rows) {
+    var processRow = function (row) {
+        var finalVal = '';
+        for (var j = 0; j < row.length; j++) {
+            var innerValue = row[j] === null ? '' : row[j].toString();
+            if (row[j] instanceof Date) {
+                innerValue = row[j].toLocaleString();
+            };
+            var result = innerValue.replace(/"/g, '""');
+            if (result.search(/("|,|\n)/g) >= 0)
+                result = '"' + result + '"';
+            if (j > 0)
+                finalVal += ',';
+            finalVal += result;
+        }
+        return finalVal + '\n';
+    };
+
+    var csvFile = '';
+    for (var i = 0; i < rows.length; i++) {
+        csvFile += processRow(rows[i]);
+    }
+
+    var blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, filename);
+    } else {
+        var link = document.createElement("a");
+        if (link.download !== undefined) { // feature detection
+            // Browsers that support HTML5 download attribute
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+}
+
+</script>
 
 {% endblock %}
