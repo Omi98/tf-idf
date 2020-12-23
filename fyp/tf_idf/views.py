@@ -54,11 +54,11 @@ def search_articles(request):
         score_doc_map.sort(key=lambda x: x['score'], reverse=True)
 
         sorted_papers = []
-        for sorted_doc_idx in score_doc_map:
+        for idx, sorted_doc_idx in enumerate(score_doc_map):
             doc = documents[sorted_doc_idx['index']]
             paper_map = next((item for item in papers_docs_mapping if item["document"] == doc), None)
             score = sorted_doc_idx['score'][0];
-            sorted_papers.append({ 'paper': { 'title': paper_map['paper'].paper_title, 'abstract': paper_map['paper'].abstract }, 'score': score })
+            sorted_papers.append({ 'paper': { 'title': paper_map['paper'].paper_title, 'abstract': paper_map['paper'].abstract }, 'score': score, 'id': idx })
             
         return render(request, 'search.html', { 'sorted_papers': sorted_papers, 'area': area, 'total_count': len(sorted_papers) })
     else:

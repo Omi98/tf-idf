@@ -66,11 +66,15 @@
         <button type="button" onclick="
             exportToCsv('all.csv', allData)
         ">Export all {{total_count}} papers as CSV</button>
+        <button type="button" onclick="
+            exportToCsv('all.csv', null)
+        ">Export selected papers as CSV</button>
         <hr />  
         <div style="padding: 0 30px;">
             {{ sorted_papers|json_script:'papers-info' }}
             <script type="text/javascript">
                 const data = JSON.parse(document.getElementById('papers-info').textContent);
+                var allPapers = data
                 var allData = []
                 data.forEach(x => {
                     const rows = [[`Title: ${x.paper.title}`], [`TFIDF Score: ${x.score}`], [`Abstract: ${x.paper.abstract}`]];
@@ -83,6 +87,8 @@
             <div class="row">
                 {{ paperInfo.paper|json_script:'paper-info' }}
                 {{ paperInfo.score|json_script:'paper-score' }}
+
+                <input type="checkbox" id={{paperInfo.id}}>
     
                 <div class="col-md-3">
                     
@@ -116,6 +122,20 @@
         }
         return finalVal + '\n';
     };
+
+    if(!rows)
+    {
+        rows = [];
+        for(let i = 0; i < allPapers.length; i ++)
+        {
+            var selected = document.getElementById(allPapers[i].id).checked
+            if(!selected)
+                continue;
+
+            const r = [[`Title: ${allPapers[i].paper.title}`], [`TFIDF Score: ${allPapers[i].score}`], [`Abstract: ${allPapers[i].paper.abstract}`]];
+            rows = [...rows, '', '', ...r];
+        }
+    }
 
     var csvFile = '';
     for (var i = 0; i < rows.length; i++) {
