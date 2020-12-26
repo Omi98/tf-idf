@@ -15,7 +15,7 @@
     <form class="example" action="/api/search_articles/" method="GET">
 
         <br />
-        <input type="text" name="search" placeholder="Search" {% if request.GET.search %} value={{ request.GET.search }} {% endif %} /> <br />
+        <input type="text" name="title" placeholder="Title" {% if request.GET.title %} value={{ request.GET.title }} {% endif %} /> <br />
         <input type="text" name="keywords" placeholder="Keywords" {% if request.GET.keywords %} value={{ request.GET.keywords }} {% endif %}/> <br />
         <input type="text" name="abstract" placeholder="Abstract" {% if request.GET.abstract %} value={{ request.GET.abstract }} {% endif %}/> <br />
 
@@ -48,11 +48,11 @@
             <option {% if request.GET.area and request.GET.area == "Machine learning of graphical models in static and dynamic complex environments" %} selected {% endif %} value="Machine learning of graphical models in static and dynamic complex environments">Machine learning of graphical models in static and dynamic complex environments</option>
         </select>
 
-        
+
         <br />
         <br />
         <!-- <i class="fa fa-search"></i> -->
-        <button type="submit">Search</button>
+        <button class="article.search_btn" type="submit">Search</button>
 
         <br />
         <br />
@@ -60,16 +60,26 @@
         <br />
 
         {% if sorted_papers is not None and area is not None %}
-        <hr />    
-        <h1>{{ area }}</h1>
-        
-        <button type="button" onclick="
-            exportToCsv('all.csv', allData)
-        ">Export all {{total_count}} papers as CSV</button>
-        <button type="button" onclick="
-            exportToCsv('all.csv', null)
-        ">Export selected papers as CSV</button>
-        <hr />  
+        <hr />
+
+        <h1 class="area_heading"> {{ area }} </h1>
+
+        <div class="export_btn">
+            <button
+            type="button"
+            onclick="exportToCsv('all.csv', allData)">
+                Export all {{total_count}} papers as CSV
+            </button>
+
+            <button
+            type="button"
+            onclick="exportToCsv('all.csv', null)">
+                Export selected papers as CSV
+            </button>
+        </div>
+
+        <hr />
+
         <div style="padding: 0 30px;">
             {{ sorted_papers|json_script:'papers-info' }}
             <script type="text/javascript">
@@ -88,13 +98,16 @@
                 {{ paperInfo.paper|json_script:'paper-info' }}
                 {{ paperInfo.score|json_script:'paper-score' }}
 
-                <input type="checkbox" id={{paperInfo.id}}>
-    
+                <div class="checkbox-div">
+                    <input class="checkbox" type="checkbox" id={{paperInfo.id}}>
+                    <label for="checkbox">Select</label>
+                </div>
+
                 <div class="col-md-3">
-                    
+
                     <h3>{{ paperInfo.paper.title }}</h3>
                     <p>{{ paperInfo.paper.abstract }}</p>
-                    
+
                 </div>
                 <hr />
             {% endfor %}
