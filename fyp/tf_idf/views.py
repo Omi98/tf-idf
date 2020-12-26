@@ -5,7 +5,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User, auth
 
 import os
-from .settings import BASE_DIR 
+from .settings import BASE_DIR
 import pandas as pd
 from .models import Papers
 from .models import RecommendationModel
@@ -16,11 +16,11 @@ def search_articles(request):
     if request.user.is_authenticated:
         # 3: User Query
         area = request.GET.get('area')
-        search = request.GET.get('search')
+        title = request.GET.get('title')
         keywords = request.GET.get('keywords')
         abstract = request.GET.get('abstract')
 
-        if area is None and search is None and keywords is None and abstract is None:
+        if area is None and title is None and keywords is None and abstract is None:
             return render(request, 'search.html')
 
         documents = []
@@ -41,7 +41,7 @@ def search_articles(request):
         denselist = dense.tolist()
 
 
-        queryDocument = search + " " + abstract + " " + keywords
+        queryDocument = title + " " + abstract + " " + keywords
 
         query_vec = vectorizer.transform([queryDocument])
 
@@ -59,7 +59,7 @@ def search_articles(request):
             paper_map = next((item for item in papers_docs_mapping if item["document"] == doc), None)
             score = sorted_doc_idx['score'][0];
             sorted_papers.append({ 'paper': { 'title': paper_map['paper'].paper_title, 'abstract': paper_map['paper'].abstract }, 'score': score, 'id': idx })
-            
+
         return render(request, 'search.html', { 'sorted_papers': sorted_papers, 'area': area, 'total_count': len(sorted_papers) })
     else:
         return redirect('/login')
